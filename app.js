@@ -15,10 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const grid = document.querySelector(".grid");
     var squares = Array.from(document.querySelectorAll(".grid div"));
-    const ScoreDisplay = document.querySelector("#score");
-    const StartButton = document.querySelector("#start-button");
+    const scoreDisplay = document.querySelector("#score");
+    const startButton = document.querySelector("#start-button");
     const width = 10;
     let nextRandom = 0;
+    let timerID;
+    let score = 0;
     
     //Declare blocks 
     const lBlock = [
@@ -75,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    timerID = setInterval(moveDown, 500);
+    // timerID = setInterval(moveDown, 500);
 
     function control(e) {
         if(e.keyCode === 37) {
@@ -110,6 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
             currentPosition = 4;
             draw();
             displayNextUp();
+            addScore();
+            gameOver();
         }
     }
 
@@ -168,4 +172,45 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
     
+    startButton.addEventListener("click", () => {
+        if(timerID) {
+            clearInterval(timerID);
+            timerID = null;
+        } else {
+            draw();
+            timerID = setInterval(moveDown, 1000);
+            nextRandom = Math.floor(Math.random() * blocks.length);
+            displayNextUp();           
+        }
+    });
+
+    function addScore() {
+        for (let i = 0; i < 199; i += width) {
+            const row = [];
+            for (let j = 0; j < 10; j++) {
+                row.push(i + j);
+            }
+            //const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
+
+            if (row.every(index => squares[index].classList.contains("taken"))) {
+                score += 10;    
+                scoreDisplay.innerHTML = score;
+                row.forEach(index => {
+                    squares[index].classList.remove("taken");
+                    squares[index].classList.remove('block');
+                });
+                const squaresRemoved = squares.splice(i, width);
+                squares = squaresRemoved.concat(squares);
+                squares.forEach(cell => grid.appendChild(cell));
+            }
+        }
+    }
+
+    function gameOver() {
+        if(current.some(index => squares[currentPosition + index].classList.contains("taken"))) {
+            scoreDisplay.innerHTML = "GAME OVER!";
+            clearInterval(timerID);
+        }
+    }
+
 })
