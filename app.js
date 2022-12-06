@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
     var timerID;
     var score = 0;
     var moveDownTime = 0;
+    var isRestart = false;
+
+    const colors = [
+        "orange",
+        "blue",
+        "red",
+        "green",
+        "pink",
+        "yellow",
+        "lightblue"
+    ];
     
     //Declare blocks 
     const lBlock = [
@@ -83,12 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function draw() {
         current.forEach(index => {
             squares[currentPosition + index].classList.add("block");
+            squares[currentPosition + index].classList.add(colors[randomBlockIndex]);
         })
     }
 
     function erase() {
         current.forEach(index => {
-            squares[currentPosition + index].classList.remove("block")
+            squares[currentPosition + index].classList.remove("block");
+            squares[currentPosition + index].classList.remove(colors[randomBlockIndex]);
         })
     }
 
@@ -185,9 +198,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayNextUp() {
         nextUpSquares.forEach(square => {
             square.classList.remove('block');
+            square.classList.remove(colors[randomBlockIndex]);
         });
         blocksNoRotations[nextRandom].forEach(index => {
             nextUpSquares[nextUpIndex + index].classList.add('block');
+            nextUpSquares[nextUpIndex + index].classList.add(colors[nextRandom]);
         })
     }
     
@@ -197,14 +212,25 @@ document.addEventListener('DOMContentLoaded', () => {
             timerID = null;
             endGame();
         } else {
-            //Start
-            draw();
-            moveDownTime = 1000;
-            timerID = setInterval(moveDown, moveDownTime);
-            nextRandom = Math.floor(Math.random() * blocks.length);
-            displayNextUp();           
+            if(!isRestart) {
+                //Start
+                startGame();
+            } else {
+                window.location.reload();
+            }
+                       
         }
     });
+
+    startGame();
+
+    function startGame() {
+        draw();
+        moveDownTime = 1000;
+        timerID = setInterval(moveDown, moveDownTime);
+        nextRandom = Math.floor(Math.random() * blocks.length);
+        displayNextUp();
+    }
 
     function addScore() {
         for (var i = 0; i < 199; i += width) {
@@ -212,14 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
             for (var j = 0; j < 10; j++) {
                 row.push(i + j);
             }
-            //const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
 
             if (row.every(index => squares[index].classList.contains("taken"))) {
                 score += 10;    
                 scoreDisplay.innerHTML = score;
                 row.forEach(index => {
-                    squares[index].classList.remove("taken");
-                    squares[index].classList.remove('block');
+                    // squares[index].classList.remove("taken");
+                    // squares[index].classList.remove("block");
+                    squares[index].className="";
                 });
                 const squaresRemoved = squares.splice(i, width);
                 squares = squaresRemoved.concat(squares);
@@ -235,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function endGame() {
+        isRestart = true;
         grid.innerHTML = "<h2>GAME OVER!</h2>";
         clearInterval(timerID);
     }

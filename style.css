@@ -1,13 +1,37 @@
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#start-button{
+    font-family: 'Courier New', Courier, monospace;
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+h2 {
+    padding-left: 15%;
+    padding-top: 75%;
+    color:white;
+}
+
 .container {
     display: flex;
 }
 
 .grid {
     width: 200px;
-    height: 400px;
+    height: 400px;  
     display: flex;
     flex-wrap: wrap;
-    background-color:bisque;
+    background-color:black;
 }
 
 .grid div {
@@ -15,9 +39,9 @@
     width: 20px;
 }
 
-.block {
+/* .block {
     background-color: brown;
-}
+} */
 
 .next-up-grid {
     margin-left: 50px;
@@ -31,4 +55,32 @@
 .next-up-grid div {
     height: 20px;
     width: 20px;
+}
+
+.orange {
+    background-color: orange;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.red {
+    background-color: crimson;
+}
+
+.green {
+    background-color: chartreuse;
+}
+
+.pink {
+    background-color: fuchsia;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.lightblue {
+    background-color: aqua;
 }
