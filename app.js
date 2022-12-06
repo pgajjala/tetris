@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var nextRandom = 0;
     var timerID;
     var score = 0;
+    var moveDownTime = 0;
     
     //Declare blocks 
     const lBlock = [
@@ -91,8 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    // timerID = setInterval(moveDown, 500);
-
     function control(e) {
         if(e.keyCode === 37) {
             moveLeft();
@@ -124,6 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentRotation = 0;
             current = blocks[randomBlockIndex][currentRotation];
             currentPosition = 4;
+            moveDownTime = moveDownTime - 1;
+            console.log(moveDownTime);
+            clearInterval(timerID);
+            timerID = setInterval(moveDown, moveDownTime);
             draw();
             displayNextUp();
             addScore();
@@ -196,7 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             //Start
             draw();
-            timerID = setInterval(moveDown, 1000);
+            moveDownTime = 1000;
+            timerID = setInterval(moveDown, moveDownTime);
             nextRandom = Math.floor(Math.random() * blocks.length);
             displayNextUp();           
         }
