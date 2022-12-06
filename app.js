@@ -30,11 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
         [width, width*2, width*2+1, width*2+2]
     ]
 
+    const backwardsLBlock = [
+        [0, 1, width+1, width*2+1],
+        [width, width+1, width+2, 2],
+        [1, width+1, width*2+1, width*2 + 2],
+        [width, width + 1, width + 2, width*2]
+    ]
+
     const zBlock = [
         [0,width,width+1,width*2+1],
         [width+1, width+2,width*2,width*2+1],
         [0,width,width+1,width*2+1],
         [width+1, width+2,width*2,width*2+1]
+    ]
+
+    const backwardsZBlock = [
+        [1,width,width+1,width*2],
+        [width, width+1,width*2+1,width*2+2],
+        [1,width,width+1,width*2],
+        [width, width+1,width*2+1,width*2+2],
     ]
 
     const tBlock = [
@@ -58,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [width,width+1,width+2,width+3]
     ]
 
-    const blocks = [lBlock, zBlock, tBlock, oBlock, iBlock];
+    const blocks = [lBlock, backwardsLBlock, zBlock, backwardsZBlock, tBlock, oBlock, iBlock];
 
     let currentPosition = 4;
     let randomBlockIndex = Math.floor(Math.random() * blocks.length);
@@ -91,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    document.addEventListener('keyup', control);
+    document.addEventListener('keydown', control);
 
     function moveDown() {
         erase();
@@ -157,7 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const blocksNoRotations = [
         [1, nextUpWidth+1, nextUpWidth*2+1, 2], //lBlock
+        [0, 1, nextUpWidth+1, nextUpWidth*2+1], //backwardsLBlock
         [0, nextUpWidth, nextUpWidth+1, nextUpWidth*2+1], //zBlock
+        [1,nextUpWidth,nextUpWidth+1,nextUpWidth*2], //backwardsZBlock
         [1, nextUpWidth, nextUpWidth+1, nextUpWidth+2], //tBlock
         [0, 1, nextUpWidth, nextUpWidth+1], //oBlock
         [1, nextUpWidth+1, nextUpWidth*2+1, nextUpWidth*3+1] //iBlock
@@ -208,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function gameOver() {
         if(current.some(index => squares[currentPosition + index].classList.contains("taken"))) {
-            scoreDisplay.innerHTML = "GAME OVER!";
+            grid.innerHTML = "<h2>GAME OVER!</h2>";
             clearInterval(timerID);
         }
     }
