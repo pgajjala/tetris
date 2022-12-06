@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.querySelector("#score");
     const startButton = document.querySelector("#start-button");
     const width = 10;
-    let nextRandom = 0;
-    let timerID;
-    let score = 0;
+    var nextRandom = 0;
+    var timerID;
+    var score = 0;
     
     //Declare blocks 
     const lBlock = [
@@ -74,10 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const blocks = [lBlock, backwardsLBlock, zBlock, backwardsZBlock, tBlock, oBlock, iBlock];
 
-    let currentPosition = 4;
-    let randomBlockIndex = Math.floor(Math.random() * blocks.length);
-    let currentRotation = 0;
-    let current = blocks[randomBlockIndex][0];
+    var currentPosition = 4;
+    var randomBlockIndex = Math.floor(Math.random() * blocks.length);
+    var currentRotation = 0;
+    var current = blocks[randomBlockIndex][0];
 
     function draw() {
         current.forEach(index => {
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const nextUpSquares = Array.from(document.querySelectorAll(".next-up-grid div")); 
     const nextUpWidth = 4;
-    let nextUpIndex = 0;
+    var nextUpIndex = 0;
     
 
     const blocksNoRotations = [
@@ -190,9 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     startButton.addEventListener("click", () => {
         if(timerID) {
-            clearInterval(timerID);
+            //Stop
             timerID = null;
+            endGame();
         } else {
+            //Start
             draw();
             timerID = setInterval(moveDown, 1000);
             nextRandom = Math.floor(Math.random() * blocks.length);
@@ -201,9 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function addScore() {
-        for (let i = 0; i < 199; i += width) {
+        for (var i = 0; i < 199; i += width) {
             const row = [];
-            for (let j = 0; j < 10; j++) {
+            for (var j = 0; j < 10; j++) {
                 row.push(i + j);
             }
             //const row = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
@@ -224,9 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function gameOver() {
         if(current.some(index => squares[currentPosition + index].classList.contains("taken"))) {
-            grid.innerHTML = "<h2>GAME OVER!</h2>";
-            clearInterval(timerID);
+            endGame();
         }
+    }
+
+    function endGame() {
+        grid.innerHTML = "<h2>GAME OVER!</h2>";
+        clearInterval(timerID);
     }
 
 })
